@@ -36,6 +36,7 @@ if __name__ == '__main__':
     totSurArea = 0
     totWinArea = 0
     totDoorArea = 0
+    totalCost = 0
     for room in range(int(roomNum)):
         roomName = input("Enter the name of room {}: ".format(room + 1))
         userHouse.addRoom(roomName)
@@ -64,29 +65,57 @@ if __name__ == '__main__':
             wallArea = ((int(wallHeight) * int(wallWidth)) - totWinArea - totDoorArea)
             userWall = Wall(wallHeight, wallWidth, wallWindows, wallDoors, wallArea)
             userRoom.addWall(userWall)
-            print(userWall.height, userWall.width, userWall.windows, userWall.doors, userWall.area)
+            # print(userWall.height, userWall.width, userWall.windows, userWall.doors, userWall.area)
+            print("")
             roomSurArea += userWall.area
             print("The Surface Area for wall " + str(wall + 1) + " is: " + str(userWall.area) + " " + units)
         paintCeiling = input("Do you want to paint the ceiling (Enter Yes or No, please): ")
         if paintCeiling == "Yes":
-            ceilingHeight = int(input("Enter the height of the ceiling"))
-            ceilingWidth = int(input("Enter the width of the ceiling"))
+            ceilingHeight = int(input("Enter the length of the ceiling: "))
+            ceilingWidth = int(input("Enter the width of the ceiling: "))
             ceilingArea = ceilingHeight * ceilingWidth
         if paintCeiling == "No":
             ceilingHeight = 0
             ceilingWidth = 0
             ceilingArea = 0
         roomSurArea += ceilingArea
+        totSurArea += roomSurArea
         print("The Surface Area for " + roomName + " is: " + str(roomSurArea) + " " + units)
+        print("")
         coats = int(input("How many coats of paint do you want for " + roomName + ": "))
         if units == "sq ft":
             print((roomSurArea * coats) / 400)
             gallons = round((roomSurArea * coats) / 400, 0)
             print("You need at least " + str(gallons) + " gallons to paint all of " + roomName)
+            print(
+                f"Available Paints: Behr White - ${24.99 * gallons}, Glidden Blue - ${32.99 * gallons}, PPG Grey - ${29.99 * gallons}")
+            roomPaint = input("Enter the available paint for " + roomName + ": ")
+            roomCost = 0
+            if roomPaint == "Behr White":
+                roomCost = round(24.99 * gallons,2)
+                print("To paint the " + roomName + " it will cost: $" + str(roomCost))
+                totalCost += roomCost
+                print("The total cost so far is: $" + str(totalCost))
+            if roomPaint == "Glidden Blue":
+                roomCost = round(32.99 * gallons,2)
+                print("To paint the " + roomName + " it will cost: $" + str(roomCost))
+                totalCost += roomCost
+                print("The total cost so far is: $" + str(totalCost))
+            if roomPaint == "PPG Grey":
+                roomCost = round(29.99 * gallons,2)
+                print("To paint the " + roomName + " it will cost: $" + str(roomCost))
+                totalCost += roomCost
+                print("The total cost so far is: $" + str(totalCost))
         if units == "sq meters":
             units = "sq meters"
 
-        # print("Select the Paint Brand" + roomName + ": ")
-        # print("Select the brand of " + roomName + ": ")
+    print("")
+    if units == "sq ft":
+        print(
+            "To paint your home with the total surface area of " + str(totSurArea) + " square ft with " + str(
+                gallons) + "gallons of paint it will "
+                           "cost $" + str(totalCost))
+    # print("Select the Paint Brand" + roomName + ": ")
+    # print("Select the brand of " + roomName + ": ")
     # print(userHouse.rooms)
     # print(userRoom.walls)
