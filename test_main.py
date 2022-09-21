@@ -24,6 +24,18 @@ def test_unitSystemTwo():
         print("Please enter Imperial or Metric")
 
 def test_unitSystemThree():
+    units = "Imperial "  # In future make sure code can recognize spaces
+    assert units == "Imperial" or units == "Metric"
+    if units == "Imperial":
+        units = "sq ft"
+        return units
+    if units == "Metric":
+        units = "sq meters"
+        return units
+    else:
+        print("Please enter Imperial or Metric")
+
+def test_unitSystemFour():
     units = "Imperial"
     assert units == "Imperial" or units == "Metric"
     if units == "Imperial":
