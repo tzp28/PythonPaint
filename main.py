@@ -74,6 +74,19 @@ class Paint:
                     self.cost += 2.2
 
 
+def unitSystem():
+    while True:
+        units = input("Which units do you use for length? (Enter Imperial or Metric, please): ")
+        if units == "Imperial":
+            units = "sq ft"
+            return units
+        if units == "Metric":
+            units = "sq meters"
+            return units
+        else:
+            print("Please enter Imperial or Metric")
+
+
 if __name__ == '__main__':
     userHouse = Home()
     userRoom = Room()
@@ -89,17 +102,7 @@ if __name__ == '__main__':
     totalCost = 0
     totGallons = 0
     totLitres = 0
-    while True:
-        units = input("Which units do you use for length? (Enter Imperial or Metric, please): ")
-        if units == "Imperial":
-            units = "sq ft"
-            break
-        if units == "Metric":
-            units = "sq meters"
-            break
-        else:
-            print("Please enter Imperial or Metric")
-
+    units = unitSystem()
     roomNum = input("Enter the amount of rooms in your home: ")
 
     for room in range(int(roomNum)):
@@ -150,7 +153,7 @@ if __name__ == '__main__':
         print("")
         coats = int(input("How many coats of paint do you want for " + roomName + ": "))
         if units == "sq ft":
-            #print((roomSurArea * coats) / 400)
+            # print((roomSurArea * coats) / 400)
             gallons = round((roomSurArea * coats) / 400, 0)
             print("You need at least " + str(gallons) + " gallons to paint all of " + roomName)
             totGallons += gallons
@@ -159,16 +162,17 @@ if __name__ == '__main__':
                 print("Available Brands from Home Depot: " + str(userPaint.brand[0:3]))
                 print("Available Colors from Home Depot: " + str(userPaint.color))
                 userBrand = input("Enter a available Brand from Home Depot: ")
-                #print(userPaint.cost)
+                # print(userPaint.cost)
                 userColor = input("Enter an available Color from Home Depot: ")
                 userPaint.setPaint('Home Depot', userBrand, userColor)
                 roomCost = 0
                 roomCost = round(int(userPaint.cost), 2)
-                #print(roomCost)
+                # print(roomCost)
                 print("The cost for " + userBrand + " " + userColor + f" is ${roomCost} per gallon")
                 roomCost = roomCost * gallons
                 print("To paint the " + roomName + " it will cost: $" + str(roomCost))
-                selectPaint = input("Do you want to select " + userBrand + " " + userColor + " as your paint for the " + roomName + " (Enter, Y/N please): ")
+                selectPaint = input(
+                    "Do you want to select " + userBrand + " " + userColor + " as your paint for the " + roomName + " (Enter, Y/N please): ")
 
                 if selectPaint == "Y":
                     totalCost += roomCost
@@ -180,7 +184,7 @@ if __name__ == '__main__':
                 else:
                     print("Please Enter Y or N")
         if units == "sq meters":
-            #print((roomSurArea * coats) / 48)
+            # print((roomSurArea * coats) / 48)
             litres = round((roomSurArea * coats) / 48, 0)
             print("You need at least " + str(litres) + " litres to paint all of " + roomName)
             totLitres += litres
@@ -189,12 +193,12 @@ if __name__ == '__main__':
                 print("Available Brands from B&Q: " + str(userPaint.brand[3:6]))
                 print("Available Colors from B&Q: " + str(userPaint.color))
                 userBrand = input("Enter a available Brand from B&Q: ")
-                #print(userPaint.cost)
+                # print(userPaint.cost)
                 userColor = input("Enter an available Color from B&Q: ")
                 userPaint.setPaint('B&Q', userBrand, userColor)
                 roomCost = 0
                 roomCost = round(int(userPaint.cost), 2)
-                #print(roomCost)
+                # print(roomCost)
                 print("The cost for " + userBrand + " " + userColor + f" is £{roomCost} per litres")
                 roomCost = roomCost * litres
                 print("To paint the " + roomName + " it will cost: £" + str(roomCost))
