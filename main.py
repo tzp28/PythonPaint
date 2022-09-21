@@ -23,15 +23,65 @@ class Wall:
         self.area = area
 
 
+class Paint:
+    def __init__(self, store, brand, color, cost):
+        self.store = store
+        self.brand = brand
+        self.color = color
+        self.cost = cost
+
+    def setPaint(self, store, brand, color):
+        if store == 'Home Depot':
+            if brand == 'Behr':
+                self.cost = 12.99
+            if brand == 'Glidden':
+                self.cost = 9.99
+            if brand == 'PPG':
+                self.cost = 7.99
+            if brand == 'Behr' or brand == 'Glidden' or brand == 'PPG':
+                if color == 'White':
+                    self.cost += 10
+                if color == 'Red':
+                    self.cost += 20
+                if color == 'Grey':
+                    self.cost += 15
+                if color == 'Blue':
+                    self.cost += 20
+                if color == 'Neutral':
+                    self.cost += 12
+                if color == 'Pink':
+                    self.cost += 22
+
+        if store == 'B&Q':
+            if brand == 'GoodHome':
+                self.cost = 2.49
+            if brand == 'Dulux':
+                self.cost = 4.99
+            if brand == 'Leyland':
+                self.cost = 1.49
+            if brand == 'GoodHome' or brand == 'Dulux' or brand == 'Leyland':
+                if color == 'White':
+                    self.cost += 1
+                if color == 'Red':
+                    self.cost += 2
+                if color == 'Grey':
+                    self.cost += 1.5
+                if color == 'Blue':
+                    self.cost += 2
+                if color == 'Neutral':
+                    self.cost += 1.2
+                if color == 'Pink':
+                    self.cost += 2.2
+
+
 if __name__ == '__main__':
-    units = input("Which units do you use for length? (Enter Imperial or Metric, please): ")
-    if units == "Imperial":
-        units = "sq ft"
-    if units == "Metric":
-        units = "sq meters"
-    roomNum = input("Enter the amount of rooms in your home: ")
     userHouse = Home()
     userRoom = Room()
+    stores = ['Home Depot', 'B&Q']
+    brands = ['Behr', 'Glidden', 'PPG', 'GoodHome', 'Dulux', 'Leyland']
+    colors = ['White', 'Red', 'Grey', 'Blue', 'Neutral', 'Pink', 'Green']
+    userPaint = Paint(stores, brands, colors, 0)
+
     roomSurArea = 0
     totSurArea = 0
     totWinArea = 0
@@ -39,6 +89,19 @@ if __name__ == '__main__':
     totalCost = 0
     totGallons = 0
     totLitres = 0
+    while True:
+        units = input("Which units do you use for length? (Enter Imperial or Metric, please): ")
+        if units == "Imperial":
+            units = "sq ft"
+            break
+        if units == "Metric":
+            units = "sq meters"
+            break
+        else:
+            print("Please enter Imperial or Metric")
+
+    roomNum = input("Enter the amount of rooms in your home: ")
+
     for room in range(int(roomNum)):
         roomSurArea = 0
         roomName = input("Enter the name of room {}: ".format(room + 1))
@@ -52,7 +115,7 @@ if __name__ == '__main__':
                 for window in range(int(wallWindows)):
                     windowHeight = input("Enter the height of the window " + str(window + 1) + ": ")
                     windowWidth = input("Enter the width of the window " + str(window + 1) + ": ")
-                    windowArea = int(windowHeight) * int(windowWidth)
+                    windowArea = float(windowHeight) * float(windowWidth)
                     totWinArea += windowArea
             else:
                 totWinArea = 0
@@ -61,11 +124,11 @@ if __name__ == '__main__':
                 for door in range(int(wallDoors)):
                     doorHeight = input("Enter the height of the door " + str(door + 1) + ": ")
                     doorWidth = input("Enter the width of the door " + str(door + 1) + ": ")
-                    doorArea = int(doorHeight) * int(doorWidth)
+                    doorArea = float(doorHeight) * float(doorWidth)
                     totDoorArea += doorArea
             else:
                 totDoorArea = 0
-            wallArea = ((int(wallHeight) * int(wallWidth)) - totWinArea - totDoorArea)
+            wallArea = ((float(wallHeight) * float(wallWidth)) - totWinArea - totDoorArea)
             userWall = Wall(wallHeight, wallWidth, wallWindows, wallDoors, wallArea)
             userRoom.addWall(userWall)
             # print(userWall.height, userWall.width, userWall.windows, userWall.doors, userWall.area)
@@ -74,8 +137,8 @@ if __name__ == '__main__':
             print("The Surface Area for wall " + str(wall + 1) + " is: " + str(userWall.area) + " " + units)
         paintCeiling = input("Do you want to paint the ceiling (Enter Yes or No, please): ")
         if paintCeiling == "Yes":
-            ceilingHeight = int(input("Enter the length of the ceiling: "))
-            ceilingWidth = int(input("Enter the width of the ceiling: "))
+            ceilingHeight = float(input("Enter the length of the ceiling: "))
+            ceilingWidth = float(input("Enter the width of the ceiling: "))
             ceilingArea = ceilingHeight * ceilingWidth
         if paintCeiling == "No":
             ceilingHeight = 0
@@ -87,54 +150,67 @@ if __name__ == '__main__':
         print("")
         coats = int(input("How many coats of paint do you want for " + roomName + ": "))
         if units == "sq ft":
-            print((roomSurArea * coats) / 400)
+            #print((roomSurArea * coats) / 400)
             gallons = round((roomSurArea * coats) / 400, 0)
             print("You need at least " + str(gallons) + " gallons to paint all of " + roomName)
             totGallons += gallons
-            print(
-                f"Available Paints: Behr White - ${24.99 * gallons}, Glidden Blue - ${32.99 * gallons}, PPG Grey - ${29.99 * gallons}")
-            roomPaint = input("Enter the available paint for " + roomName + ": ")
-            roomCost = 0
-            if roomPaint == "Behr White":
-                roomCost = round(24.99 * gallons, 2)
+            while True:
+                userPaint.cost = 0
+                print("Available Brands from Home Depot: " + str(userPaint.brand[0:3]))
+                print("Available Colors from Home Depot: " + str(userPaint.color))
+                userBrand = input("Enter a available Brand from Home Depot: ")
+                #print(userPaint.cost)
+                userColor = input("Enter an available Color from Home Depot: ")
+                userPaint.setPaint('Home Depot', userBrand, userColor)
+                roomCost = 0
+                roomCost = round(int(userPaint.cost), 2)
+                #print(roomCost)
+                print("The cost for " + userBrand + " " + userColor + f" is ${roomCost} per gallon")
+                roomCost = roomCost * gallons
                 print("To paint the " + roomName + " it will cost: $" + str(roomCost))
-                totalCost += roomCost
-                print("The total cost so far is: $" + str(totalCost))
-            if roomPaint == "Glidden Blue":
-                roomCost = round(32.99 * gallons, 2)
-                print("To paint the " + roomName + " it will cost: $" + str(roomCost))
-                totalCost += roomCost
-                print("The total cost so far is: $" + str(totalCost))
-            if roomPaint == "PPG Grey":
-                roomCost = round(29.99 * gallons, 2)
-                print("To paint the " + roomName + " it will cost: $" + str(roomCost))
-                totalCost += roomCost
-                print("The total cost so far is: $" + str(totalCost))
+                selectPaint = input("Do you want to select " + userBrand + " " + userColor + " as your paint for the " + roomName + " (Enter, Y/N please): ")
+
+                if selectPaint == "Y":
+                    totalCost += roomCost
+                    print("The total cost so far is: $" + str(totalCost))
+                    break
+
+                if selectPaint == "N":
+                    print("")
+                else:
+                    print("Please Enter Y or N")
         if units == "sq meters":
-            print((roomSurArea * coats) / 48)
+            #print((roomSurArea * coats) / 48)
             litres = round((roomSurArea * coats) / 48, 0)
             print("You need at least " + str(litres) + " litres to paint all of " + roomName)
             totLitres += litres
-            print(
-                f"Available Paints: GoodHome White - £{4.80 * litres}, Dulux Green - £{7.99 * litres}, Leyland Grey - £{3.50 * litres}")
-            roomPaint = input("Enter the available paint for " + roomName + ": ")
-            roomCost = 0
-            if roomPaint == "GoodHome White":
-                roomCost = round(4.80 * litres, 2)
+            while True:
+                userPaint.cost = 0
+                print("Available Brands from B&Q: " + str(userPaint.brand[3:6]))
+                print("Available Colors from B&Q: " + str(userPaint.color))
+                userBrand = input("Enter a available Brand from B&Q: ")
+                #print(userPaint.cost)
+                userColor = input("Enter an available Color from B&Q: ")
+                userPaint.setPaint('B&Q', userBrand, userColor)
+                roomCost = 0
+                roomCost = round(int(userPaint.cost), 2)
+                #print(roomCost)
+                print("The cost for " + userBrand + " " + userColor + f" is £{roomCost} per litres")
+                roomCost = roomCost * litres
                 print("To paint the " + roomName + " it will cost: £" + str(roomCost))
-                totalCost += roomCost
-                print("The total cost so far is: £" + str(totalCost))
-            if roomPaint == "Dulux Green":
-                roomCost = round(7.99 * litres, 2)
-                print("To paint the " + roomName + " it will cost: £" + str(roomCost))
-                totalCost += roomCost
-                print("The total cost so far is: £" + str(totalCost))
-            if roomPaint == "Leyland Grey":
-                roomCost = round(3.50 * litres, 2)
-                print("To paint the " + roomName + " it will cost: £" + str(roomCost))
-                totalCost += roomCost
-                print("The total cost so far is: £" + str(totalCost))
-    # Print out each room surface area, gallons needed, paint used, and cost
+                selectPaint = input(
+                    "Do you want to select " + userBrand + " " + userColor + " as your paint for the " + roomName + " (Enter, Y/N please): ")
+
+                if selectPaint == "Y":
+                    totalCost += roomCost
+                    print("The total cost so far is: £" + str(totalCost))
+                    break
+
+                if selectPaint == "N":
+                    print("")
+                else:
+                    print("Please Enter Y or N")
+
     print("")
     if units == "sq ft":
         print(
@@ -147,7 +223,3 @@ if __name__ == '__main__':
             "To paint your home with the total surface area of " + str(totSurArea) + " square meters with " + str(
                 totLitres) + " litres of paint it will "
                              "cost £" + str(totalCost))
-    # print("Select the Paint Brand" + roomName + ": ")
-    # print("Select the brand of " + roomName + ": ")
-    # print(userHouse.rooms)
-    # print(userRoom.walls)
